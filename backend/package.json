@@ -1,0 +1,7 @@
+{
+  "name": "payency",
+  "version": "1.0.0",
+  "description": "Simple REST API in Python",
+  "author": "Riva",
+  "license": "MIT"
+}
