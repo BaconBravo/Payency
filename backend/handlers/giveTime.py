@@ -15,7 +15,7 @@ def main(event, context):
     given_time = data['time']
 
     body = {
-        "message": "The current time is " + str(given_time)
+        "message": "The given time is " + str(given_time)
     }
 
     response = {
