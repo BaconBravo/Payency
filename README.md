@@ -1,86 +1,116 @@
-<!--
-title: 'AWS Simple HTTP Endpoint example in Python'
-description: 'This example demonstrates how to setup a simple HTTP GET endpoint. Once you ping it, it will reply with the current time.'
-layout: Doc
-framework: v1
-platform: AWS
-language: Python
-authorLink: 'https://github.com/rupakg'
-authorName: 'Rupak Ganguly'
-authorAvatar: 'https://avatars0.githubusercontent.com/u/8188?v=4&s=140'
--->
-# Simple HTTP Endpoint Example
 
-This example demonstrates how to setup a simple HTTP GET endpoint. Once you ping it, it will reply with the current time. While the internal function is name `currentTime` the HTTP endpoint is exposed as `ping`.
 
-## Use Cases
+When pasting in commands to your terminal, ignore the dollar sign $. It's used in this doc to indicate that we're in the system shell via the Terminal app or whichever app you use. Personally, I like [iTerm](<https://iterm2.com/>).
 
-- Wrapping an existing internal or external endpoint/service
 
-## Deploy
 
-In order to deploy the you endpoint simply run
+### Configure machine with necessary frameworks
+
+- **Install homebrew**
+
+  ```bash
+  # Copy and paste this one-liner into your terminal
+  $ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  ```
+
+  - Test by successfully printing your version with
+
+  - ```bash
+    $ brew -v
+    ```
+
+    
+
+- **Install node and npm**
+
+  Respectively, this is our runtime environment and package manager.
+
+  ```bash
+  $ brew install node
+  ```
+
+  - Test by printing version with
+
+    ```bash
+    $ node -v
+    # Some output
+    $ npm -v
+    # Some output
+    ```
+
+
+
+- **Install Signal web app**
+
+  Signal is a strong end-to-end encrypted messaging app. This is what we use when we need to share secrets with one another, like sending API secret keys, passwords, etc
+
+- **Install AWS CLI**
+
+  You should have received an email to your rivahq inbox from Amazon Web Services with a link to configure your AWS account and recei
+
+  
+
+  - ```bash
+    $ aws configure
+    AWS Access Key ID [None]: <YOUR_ACCESS_KEY_ID_HERE>
+    AWS Secret Access Key [None]: <YOUR_SECRET_ACCESS_KEY_HERE>
+    Default region name [None]: us-west-2
+    Default output format [None]: <Enter>
+    ```
+
+  - 
+
+  
+
+- **Install serverless**
+
+  - `$ npm install serverless -g` (will install globally on your machine with the `-g` flag)
+
+    - Test install with `$ serverless --version`
+
+  - Configure serverless
+
+    
+
+    ```bash
+    $ serverless config
+    
+    export AWS_ACCESS_KEY_ID=<your-key-here>
+    export AWS_SECRET_ACCESS_KEY=<your-secret-key-here>
+    exDefault region name [None]: us-west-2
+    Default output format [None]: ENTER
+    ... # <you can hit Enter for the remaining two inputs it asks you for
+    
+    # AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY are now available for serverless to use
+    ```
+
+    
+
+
+
+
+
+- Test existing API 
+
+  *Note that the `sls` command is the shorthand version of the `serverless` command*
 
 ```bash
-serverless deploy
-```
-
-The expected result should be similar to:
-
-```bash
-Serverless: Packaging service...
-Serverless: Uploading CloudFormation file to S3...
-Serverless: Uploading service .zip file to S3 (758 B)...
-Serverless: Updating Stack...
-Serverless: Checking Stack update progress...
-..........
-Serverless: Stack update finished...
-
-Service Information
-service: aws-python-simple-http-endpoint
-stage: dev
-region: us-east-1
-api keys:
-  None
-endpoints:
-  GET - https://f7r5srabr3.execute-api.us-east-1.amazonaws.com/dev/ping
-functions:
-  aws-python-simple-http-endpoint-dev-currentTime: arn:aws:lambda:us-east-1:377024778620:function:aws-python-simple-http-endpoint-dev-currentTime
-```
-
-## Usage
-
-You can now invoke the Lambda directly and even see the resulting log via
-
-```bash
-serverless invoke --function currentTime --log
-```
-
-The expected result should be similar to:
-
-```bash
+# Test GET request
+$ sls invoke -f currentTime
+# response:
 {
-    "body": "{\"message\": \"Hello, the current time is 15:40:19.009371\"}",
-    "statusCode": 200
+    "statusCode": 200,
+    "body": "{\"message\": \"The current time is <SOME_TIME returned by API>\"}"
 }
---------------------------------------------------------------------
-START RequestId: a26699d3-b3ee-11e6-98f33f952e8294 Version: $LATEST
-END RequestId: a26699d3-b3ee-11e6-98f33f952e8294
-REPORT RequestId: a26699d3-b3ee-11e6-98f33f952e8294	Duration: 0.23 ms	Billed Duration: 100 ms 	Memory Size: 1024 MB	Max Memory Used: 15 MB
+
+
+
+# Test POST request (passes in a mock HTTP request body)
+$ sls invoke -f giveTime -p __mocks__/giveTime-event.json
+# response:
+{
+    "statusCode": 200,
+    "body": "{\"message\": \"The current time is <MOCK_TIME>\"}"
+}
 ```
 
-Finally you can send an HTTP request directly to the endpoint using a tool like curl
-
-```bash
-curl https://XXXXXXX.execute-api.us-east-1.amazonaws.com/dev/ping
-```
-
-The expected result should be similar to:
-
-```bash
-{"message": "Hello, the current time is 15:38:53.668501"}%  
-```
-
-## Scaling
-
-By default, AWS Lambda limits the total concurrent executions across all functions within a given region to 100. The default limit is a safety limit that protects you from costs due to potential runaway or recursive functions during initial development and testing. To increase this limit above the default, follow the steps in [To request a limit increase for concurrent executions](http://docs.aws.amazon.com/lambda/latest/dg/concurrent-executions.html#increase-concurrent-executions-limit).
