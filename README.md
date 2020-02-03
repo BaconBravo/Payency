@@ -1,6 +1,6 @@
 
 
-###### I am using the dollar sign (`###### ) in this doc to indicate that we're in the system shell via the Terminal app or whichever app you use. (Personally, I like [iTerm](<https://iterm2.com/>)). So if you are pasting the commands, do not paste the `######  .
+###### I am using the dollar sign ($) in this doc to indicate that we're in the system shell via the Terminal app or whichever app you use. (Personally, I like [iTerm](<https://iterm2.com/>)). So if you are pasting the commands, do not paste the $.
 
 
 
@@ -193,3 +193,5 @@ $ cd Payency
   ​	*Note that the `sls` command is the shorthand version of the `serverless` command*	
 
   
+  ## Frontend Web client
+  TODO
