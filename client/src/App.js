@@ -1,24 +1,42 @@
 import React from 'react';
-import logo from './logo.svg';
+import { Button, Message, Grid, Dropdown } from 'semantic-ui-react';
 import './App.css';
+
+const requestOptions = [
+  {
+    key: 'GET',
+    text: 'GET',
+    value: 'GET',
+  },
+  {
+    key: 'POST',
+    text: 'POST',
+    value: 'POST',
+  },
+];
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Grid divided='vertically'>
+        <Grid.Row columns={2}>
+          <Grid.Column>
+            <Dropdown
+              placeholder="Select Request"
+              selection
+              options={requestOptions}
+            />
+          </Grid.Column>
+          <Grid.Column>
+            <Button>Send</Button>
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row columns={1}>
+          <Grid.Column>
+            <Message header="Response" content="<response goes here>" />
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
     </div>
   );
 }
