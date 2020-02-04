@@ -6,6 +6,11 @@ plugins:
   - serverless-python-requirements
 
 
+custom:
+  pythonRequirements:
+    pythonBin: /opt/python3.6/bin/python
+
+
 provider:
   name: aws
   runtime: python3.6
