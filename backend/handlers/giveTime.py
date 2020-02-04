@@ -1,7 +1,9 @@
 import json
 import datetime
 
+from lambda_decorators import cors_headers
 
+@cors_headers
 def main(event, context):
     # Load the request body
     data = json.loads(event['body'])

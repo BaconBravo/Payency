@@ -2,6 +2,10 @@ service: payency
 
 frameworkVersion: ">=1.2.0 <2.0.0"
 
+plugins:
+  - serverless-python-requirements
+
+
 provider:
   name: aws
   runtime: python3.6
@@ -14,6 +18,7 @@ functions:
       - http:
           path: time
           method: get
+          cors: true
 
   giveTime:
     handler: handlers/giveTime.main
@@ -21,6 +26,7 @@ functions:
       - http:
           path: time
           method: post
+          cors: true
 
 
               
